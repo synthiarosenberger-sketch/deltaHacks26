@@ -1,0 +1,31 @@
+//purpose: update tasks when users complete them
+/* global use, db */
+// Playground: Tasks - Update task and level up
+
+use('EcoApp');
+
+// 1️⃣ Mark a specific task as completed
+const updateTaskResult = db.users.updateOne(
+  { username: "ecoSynthia", "dailyTasks.task": "Recycle 3 items" },
+  {
+    $set: { "dailyTasks.$.completed": true },
+    $inc: { "points": 10, "character.happiness": 5 }
+  }
+);
+console.log("Update Task Result:", updateTaskResult);
+
+// 2️⃣ Print the updated user document
+const updatedUser = db.users.findOne({ username: "ecoSynthia" });
+console.log("Updated User:", updatedUser);
+
+// 3️⃣ Optional: Level up character if points >= 100
+if (updatedUser.points >= 100) {
+  const levelUpResult = db.users.updateOne(
+    { username: "ecoSynthia" },
+    { $inc: { "character.level": 1 }, $set: { points: 0 } }
+  );
+  console.log("Level Up Result:", levelUpResult);
+
+  const leveledUpUser = db.users.findOne({ username: "ecoSynthia" });
+  console.log("User after Level Up:", leveledUpUser);
+}

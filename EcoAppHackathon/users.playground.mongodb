@@ -1,0 +1,30 @@
+
+/* global use, db */
+// Playground: Users - Create and view users
+
+// 1️⃣ Use the EcoApp database
+use('EcoApp');
+
+// 2️⃣ Create the 'users' collection (optional)
+db.createCollection("users");
+
+// 3️⃣ Insert a sample user and print the result
+//NOTE: YOU CAN ADD MORE USERS BY COPYING THE INSERT ONE LINE
+const insertResult = db.users.insertOne({
+  username: "ecoSynthia",
+  email: "synthia@example.com",
+  character: { name: "Leafy", level: 1, happiness: 50 },
+  dailyTasks: [
+    { task: "Recycle 3 items", completed: false },
+    { task: "Walk instead of commuting", completed: false },
+    { task: "Turn off all lights", completed: false }
+  ],
+  points: 0,
+  streak: 0
+});
+
+console.log("Insert Result:", insertResult);
+
+// 4️⃣ View all users
+const allUsers = db.users.find().toArray();
+console.log("All Users:", allUsers);
