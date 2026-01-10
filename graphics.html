@@ -2,34 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Greener Day</title>
+    <title>Echo Buddy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
 
     <style>
+        :root {
+            --primary-green: #4CAF50;
+            --dark-green: #2E7D32;
+            --bg-color: #e8f5e9;
+        }
         body {
-            background-color: #cdffd1; /* light green */
+            background-color: var(--bg-color);
+            font-family: 'Nunito', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+
+        }
+                .card {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
-            font-family: Arial, sans-serif;
+        }
+    </style>
+    <style>
+        .basic-box {
+            width: max-widt;
+            height: 600px;
+            border: 2px solid #000;
+            background-color: white;
+            padding: 10px;
+            margin: 40px auto;
+            color: black;
+        }
+        h1 {
+            color: var(--dark-green);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        .date-text {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .content-layout {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
         }
     </style>
 </head>
 <body>
+    <div class="card">
+        <h1>Echo Buddy 🌿</h1>
+        <p class="date-text">Missions for <span id="date"></span></p>
 
-    <h1>Today's Goals</h1>
-    <p>Today's date: <span id="date"></span></p>
+        <script>
+            const today = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById("date").textContent =
+                today.toLocaleDateString(undefined, options);
+        </script>
 
-    <script>
-        const today = new Date();
-        const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById("date").textContent =
-            today.toLocaleDateString(undefined, options);
-    </script>
-
-    <figure>
-        <img src="cute_globe.jpg" alt="Globert Wants You To Save The Planet One Goal at a Time!">
-        <figcaption>Globert Wants You To Save The Planet One Goal at a Time!</figcaption>
-    </figure>
-
-    <br><br>
-
+        <figure>
+            <img src="cute_globe.jpg" alt="Globert Wants You To Save The Planet One Goal at a Time!" width = "200" height = "200">
+            <figcaption>Globert Wants You To Save The Planet One Goal at a Time!</figcaption>
+        </figure>
+    </div>
 </body>
 </html>
