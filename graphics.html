@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Greener Day</title>
+
+    <style>
+        body {
+            background-color: #cdffd1; /* light green */
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Today's Goals</h1>
+    <p>Today's date: <span id="date"></span></p>
+
+    <script>
+        const today = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("date").textContent =
+            today.toLocaleDateString(undefined, options);
+    </script>
+
+    <figure>
+        <img src="cute_globe.jpg" alt="Globert Wants You To Save The Planet One Goal at a Time!">
+        <figcaption>Globert Wants You To Save The Planet One Goal at a Time!</figcaption>
+    </figure>
+
+    <br><br>
+
+</body>
+</html>
