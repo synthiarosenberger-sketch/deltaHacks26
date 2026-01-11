@@ -1,0 +1,85 @@
+/* this is the style: how it looks, colors, fonts, spacing, layout, animations ect */
+/* style.css - Echo Buddy styling */
+
+/* Color variables */
+:root {
+    --primary-green: #4CAF50;
+    --dark-green: #2E7D32;
+    --bg-color: #e8f5e9;
+}
+
+/* Page styling */
+body {
+    background-color: var(--bg-color);
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Main card */
+.card {
+    background-color: white;
+    width: 90%;
+    max-width: 800px;
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+}
+
+/* Corner decorations */
+.corner-deco {
+    position: absolute;
+    font-size: 50px;
+    pointer-events: none;
+    user-select: none;
+}
+.top-left     { top: 10px; left: 10px; transform: rotate(-15deg); }
+.top-right    { top: 10px; right: 10px; transform: rotate(15deg); }
+.bottom-left  { bottom: 10px; left: 10px; transform: rotate(-45deg); }
+.bottom-right { bottom: 10px; right: 10px; transform: rotate(45deg); }
+
+/* Headings */
+h1, h2, figcaption {
+    color: var(--dark-green);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.date-text {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+}
+
+/* Task list styling */
+ul.task-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+ul.task-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+ul.task-list li span {
+    color: var(--dark-green);
+    font-weight: 600;
+}
+
+/* Checkboxes and buttons hover */
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
