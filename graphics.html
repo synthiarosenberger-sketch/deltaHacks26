@@ -5,7 +5,37 @@
     <title>Echo Buddy</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
+    <style>
+        .basic-box {
+            position: relative; 
+            width: 800px;
+            min-height: 500px;
+            background-color: white;
+            border-radius: 20px;
+            margin: 40px auto;
+            padding: 40px;
+            overflow: hidden; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
 
+        .corner-deco {
+         position: absolute;
+            font-size: 50px; 
+            pointer-events: none; 
+            user-select: none; 
+        }
+    
+     .top-left     { top: 10px; left: 10px; transform: rotate(-15deg); }
+        .top-right    { top: 10px; right: 10px; transform: rotate(15deg); }
+        .bottom-left  { bottom: 10px; left: 10px; transform: rotate(-45deg); }
+        .bottom-right { bottom: 10px; right: 10px; transform: rotate(45deg); }
+    </style>
+
+<div class="basic-box">
+    <div class="corner-deco top-left">🌿</div>
+    <div class="corner-deco top-right">🌸</div>
+    <div class="corner-deco bottom-left">🌸</div>
+    <div class="corner-deco bottom-right">🍃</div>
     <style>
         :root {
             --primary-green: #4CAF50;
@@ -22,35 +52,37 @@
             margin: 0;
 
         }
-                .card {
+        .card {
             background-color: white;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             padding: 40px;
             border-radius: 24px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
-        }
-    </style>
-    <style>
-        .basic-box {
-            width: max-widt;
-            height: 600px;
-            border: 2px solid #000;
-            background-color: white;
-            padding: 10px;
-            margin: 40px auto;
-            color: black;
         }
         h1 {
             color: var(--dark-green);
             margin-bottom: 5px;
             font-weight: 700;
         }
+        figcaption {
+            color: var(--dark-green);
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
         .date-text {
             color: #666;
             font-size: 0.9rem;
             margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--dark-green);
+            margin-bottom: 5px;
+            font-weight: 700;
+
         }
 
         .content-layout {
@@ -60,12 +92,30 @@
             gap: 20px;
             flex-wrap: wrap;
         }
+        ul.task-list {
+            list-style: none;       
+            padding: 0; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;             
+        }
+
+        ul.task-list li {
+            display: flex;
+            align-items: center;
+            gap: 10px;    
+        }
+        ul.task-list li span {
+         color: var(--dark-green);
+        }
+
     </style>
 </head>
 <body>
     <div class="card">
         <h1>Echo Buddy 🌿</h1>
-        <p class="date-text">Missions for <span id="date"></span></p>
+        <p class="date-text"> 📅 Missions for <span id="date"></span></p>
 
         <script>
             const today = new Date();
@@ -75,9 +125,30 @@
         </script>
 
         <figure>
-            <img src="cute_globe.jpg" alt="Globert Wants You To Save The Planet One Goal at a Time!" width = "200" height = "200">
-            <figcaption>Globert Wants You To Save The Planet One Goal at a Time!</figcaption>
+            <img id="buddyImage" src='sad_globert.jpg' alt="Globert Wants You To Save The Planet One Goal at a Time!" width = "250" height = "225">
+            <figcaption>"Globert Wants You To Save The Planet One Goal at a Time!"</figcaption>
         </figure>
+        <h2> ♻️Daily Missions♻️ </h2>
+        <ul class="task-list">
+            <li><input type="checkbox"><span>Recycle plastics</span></li>
+            <li><input type="checkbox"><span>Use reusable bottle</span></li>
+            <li><input type="checkbox"><span>Turn off lights</span></li>
+        </ul>
+        <script>
+            const checkboxes = document.querySelectorAll('.task-list input');
+            const buddyImage = document.getElementById('buddyImage');
+
+            function updateImage() {
+
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                if (allChecked) {
+                 buddyImage.src = 'cute_globe.jpg';
+                } else {
+                    buddyImage.src = 'sad_globert.jpg'; 
+                }
+            }
+        checkboxes.forEach(cb => cb.addEventListener('change', updateImage));
+        </script>
     </div>
 </body>
 </html>
