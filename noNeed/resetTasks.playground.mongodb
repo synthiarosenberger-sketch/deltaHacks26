@@ -1,0 +1,18 @@
+//purpose: reset all daily tasks to false at the start of a new day
+/* global use, db */
+// Playground: Reset Daily Tasks
+
+/*
+use('EcoApp');
+
+// 1️⃣ Reset all tasks for all users
+const resetResult = db.users.updateMany(
+  {},
+  { $set: { "dailyTasks.$[].completed": false } }
+);
+console.log("Reset Result:", resetResult);
+
+// 2️⃣ Verify reset
+const allUsersAfterReset = db.users.find().toArray();
+console.log("Users after Reset:", allUsersAfterReset);
+*/
