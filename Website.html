@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Echo Buddy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-green: #4CAF50;
+      --dark-green: #2E7D32;
+      --bg-color: #e8f5e9;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      font-family: 'Nunito', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .basic-box {
+      position: relative;
+      width: 800px;
+      min-height: 500px;
+      background-color: white;
+      border-radius: 20px;
+      margin: 40px auto;
+      padding: 40px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .corner-deco {
+      position: absolute;
+      font-size: 50px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .top-left { top: 10px; left: 10px; transform: rotate(-15deg); }
+    .top-right { top: 10px; right: 10px; transform: rotate(15deg); }
+    .bottom-left { bottom: 10px; left: 10px; transform: rotate(-45deg); }
+    .bottom-right { bottom: 10px; right: 10px; transform: rotate(45deg); }
+
+    .card {
+      background-color: white;
+      width: 90%;
+      max-width: 800px;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    h1, h2, figcaption {
+      color: var(--dark-green);
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .date-text {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
+    }
+
+    ul.task-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    ul.task-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    ul.task-list li span {
+      color: var(--dark-green);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="basic-box">
+    <div class="corner-deco top-left">🌿</div>
+    <div class="corner-deco top-right">🌸</div>
+    <div class="corner-deco bottom-left">🌸</div>
+    <div class="corner-deco bottom-right">🍃</div>
+
+    <div class="card">
+      <h1>Echo Buddy 🌿</h1>
+      <p class="date-text"> 📅 Missions for <span id="date"></span></p>
+
+      <figure>
+        <img id="buddyImage" src="https://raw.githubusercontent.com/synthiarosenberger-sketch/deltaHacks26/alysha/sad_globert.jpg"
+             alt="Globert Wants You To Save The Planet One Goal at a Time!"
+             width="250" height="225">
+        <figcaption>"Globert Wants You To Save The Planet One Goal at a Time!"</figcaption>
+      </figure>
+
+      <h2>♻️ Daily Missions ♻️</h2>
+      <ul class="task-list">
+        <li><input type="checkbox"><span id="task1Text"></span></li>
+        <li><input type="checkbox"><span id="task2Text"></span></li>
+        <li><input type="checkbox"><span id="task3Text"></span></li>
+      </ul>
+      <p id="taskCounter" style="margin-top:12px; color:var(--dark-green); font-weight:600">Completed ✅: <span id="completedCount">0</span> / 3</p>
+      <p>🔥 Streak: <span id="streak">0</span> days</p>
+      <script>
+        // Display date (local)
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("date").textContent =
+          new Date().toLocaleDateString(undefined, dateOptions);
+
+        // Daily tasks + midnight regeneration
+        const tasks = ["Zero Waste", "Carpool", "Plant a Tree", "Beach Cleanup", "Bike to Work", "Lights out after 10pm", "Plastic-Free Challenge", "Meat free"];
+        const storageKey = 'dailyTasks';
+
+        // LOCAL date key (fixes UTC reset bug)
+        function todayKey() {
+          const d = new Date();
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, "0");
+          const day = String(d.getDate()).padStart(2, "0");
+          return `${y}-${m}-${day}`;
+        }
+
+        function pickRandom(pool, n = 3) {
+          const p = pool.slice();
+          const out = [];
+          while (out.length < n && p.length) {
+            const i = Math.floor(Math.random() * p.length);
+            out.push(p.splice(i, 1)[0]);
+          }
+          return out;
+        }
+
+        function loadStored() {
+          try { return JSON.parse(localStorage.getItem(storageKey)); }
+          catch (_) { return null; }
+        }
+
+        function saveStored(obj) {
+          localStorage.setItem(storageKey, JSON.stringify(obj));
+        }
+
+        const checkboxes = document.querySelectorAll('.task-list input');
+        const buddyImage = document.getElementById('buddyImage');
+
+        function updateImage() {
+          const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+          buddyImage.src = allChecked
+             ? 'https://raw.githubusercontent.com/synthiarosenberger-sketch/deltaHacks26/alysha/cute_globe.jpg'
+                : 'https://raw.githubusercontent.com/synthiarosenberger-sketch/deltaHacks26/alysha/sad_globert.jpg';
+
+        }
+
+        function populate(obj) {
+          const t = obj.tasks || [];
+          document.getElementById("task1Text").textContent = t[0] || '';
+          document.getElementById("task2Text").textContent = t[1] || '';
+          document.getElementById("task3Text").textContent = t[2] || '';
+
+          const completed = obj.completed || [false, false, false];
+          checkboxes.forEach((cb, i) => cb.checked = !!completed[i]);
+
+          updateImage();
+        }
+
+        function generateAndSave() {
+          const tk = todayKey();
+          const sel = pickRandom(tasks, 3);
+          const obj = { date: tk, tasks: sel, completed: [false, false, false] };
+          saveStored(obj);
+
+          // refresh displayed date too
+          document.getElementById("date").textContent =
+            new Date().toLocaleDateString(undefined, dateOptions);
+
+          populate(obj);
+          return obj;
+        }
+
+        function ensureToday() {
+          const tk = todayKey();
+          const stored = loadStored();
+          if (stored && stored.date === tk && Array.isArray(stored.tasks) && stored.tasks.length === 3) {
+            populate(stored);
+            return stored;
+          }
+          return generateAndSave();
+        }
+
+        checkboxes.forEach((cb, i) => {
+          cb.addEventListener('change', () => {
+            const cur = loadStored() || { date: todayKey(), tasks: pickRandom(tasks, 3), completed: [false, false, false] };
+            cur.completed = cur.completed || [false, false, false];
+            cur.completed[i] = cb.checked;
+            saveStored(cur);
+            updateImage();
+            updateCounter();
+          });
+        });
+
+        function updateCounter() {
+          const count = Array.from(checkboxes).filter(cb => cb.checked).length;
+          const el = document.getElementById('completedCount');
+          if (el) el.textContent = String(count);
+        }
+
+        // Regenerate at local midnight
+        let midnightTimer = null;
+        function scheduleMidnight() {
+          if (midnightTimer) clearTimeout(midnightTimer);
+          const now = new Date();
+          const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+          const ms = nextMidnight.getTime() - now.getTime();
+          midnightTimer = setTimeout(() => {
+            generateAndSave();
+            scheduleMidnight();
+          }, ms + 50);
+        }
+
+        // Check date when returning to tab (sleep/hibernate safe)
+        function checkDateOnVisibility() {
+          const stored = loadStored();
+          const tk = todayKey();
+          if (!stored || stored.date !== tk) generateAndSave();
+        }
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') checkDateOnVisibility();
+        });
+        window.addEventListener('focus', checkDateOnVisibility);
+
+        // init
+        ensureToday();
+        updateCounter();
+        scheduleMidnight();
+      </script>
+    </div>
+  </div>
+</body>
+</html>
